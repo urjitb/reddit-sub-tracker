@@ -8,6 +8,7 @@ const id = process.env.CLIENT_ID
 const secret = process.env.SECRET
 const uname = process.env.USERNAME
 const pwrd = process.env.PASSWORD
+const ua = process.env.UA
 
 const params = new URLSearchParams();
 params.append('grant_type', 'password');
@@ -22,7 +23,7 @@ async function checkSubs(subreddits, filter) {
     let postsCollector = []
     let options = {
         headers: {
-            'User-Agent': 'web:subtrackr:v0.1 (by /u/Anxious-Marketing259)'
+            'User-Agent': ua
         }
 
     }

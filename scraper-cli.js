@@ -10,7 +10,7 @@ const id = process.env.CLIENT_ID
 const secret = process.env.SECRET
 const uname = process.env.USERNAME
 const pwrd = process.env.PASSWORD
-
+const ua = process.env.UA
 
 const params = new URLSearchParams();
 params.append('grant_type', 'password');
@@ -18,6 +18,7 @@ params.append('username', uname);
 params.append('password', pwrd);
 
 let subs = prompt("Subs? (seperate by comma) ")
+let filter = prompt("Look for? ")
 
 subs = subs.split(',')
 
@@ -39,14 +40,14 @@ function checkSubs(subreddits) {
             axios.get(`https://oauth.reddit.com/r/${sub}/new.json?limit=50`, {
                 headers: {
                     "Authorization": `Bearer ${response.data.access_token}`,
-                    'User-Agent': 'web:subtrackr:v0.1 (by /u/Anxious-Marketing259'
+                    'User-Agent': ua
                 }
             }).then(function (response) {
                 console.log(response.data.data.children.length)
                 response.data.data.children.forEach(function (post) {
                     let date = new Date(post.data.created * 1000)
 
-                    if (post.data.title.toLowerCase().includes("hiring")) {
+                    if (post.data.title.toLowerCase().includes(filter)) {
 
                         if (postsCollector.some(e => e.title == post.data.title)) {
                             console.log('Exists');
