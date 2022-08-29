@@ -2,6 +2,7 @@
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/urjitb/reddit-sub-tracker)
 
+Track your favourite subs for new posts passing a filter of your choosing.
 ------
 
 ## Key Features
