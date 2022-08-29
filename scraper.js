@@ -1,6 +1,5 @@
 require('dotenv').config();
 
-
 const axios = require('axios');
 const fs = require('fs')
 
@@ -15,8 +14,6 @@ params.append('grant_type', 'password');
 params.append('username', uname);
 params.append('password', pwrd);
 
-
-
 async function checkSubs(subreddits, filter) {
 
     let fR = true;
@@ -25,7 +22,6 @@ async function checkSubs(subreddits, filter) {
         headers: {
             'User-Agent': ua
         }
-
     }
     await axios.post('https://www.reddit.com/api/v1/access_token', params, {
         auth: {
@@ -43,18 +39,22 @@ async function checkSubs(subreddits, filter) {
             response.data.data.children.forEach(function (post) {
                 let date = new Date(post.data.created * 1000)
 
-                if (post.data.title.toLowerCase().includes(filters)) {
+                if (post.data.title.toLowerCase().includes(filter)) {
 
                     if (postsCollector.some(e => e.title == post.data.title)) {
-                        console.log('Exists');
+                   
                     } else {
-                      
-                        postsCollector.push({ title: post.data.title, createdAt: `${date.toDateString()} ${date.toTimeString()}` })
-                        firstRun && console.log({
-                            title: post.data.title,
+         
+                        postsCollector.push({ title: post.data.title,
                             createdAt: `${date.toDateString()} ${date.toTimeString()}`,
-                            subreddit: post.data.subreddit, permalink: post.data.permalink
+                            subreddit: post.data.subreddit, permalink: post.data.permalink,
+                            url: post.data.url,
+                            selftext: post.data.selftext,
+                            
+                            ups: post.data.ups,
+                            upvote_ratio: post.data.upvote_ratio
                         })
+
                     }
                 }
             })

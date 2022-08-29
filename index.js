@@ -3,16 +3,23 @@ const app = express()
 const port = 3000
 const scraper = require('./scraper')
 const bodyParser = require('body-parser')
+const cors = require("cors")
 
-app.use(bodyParser.json())
+app.use(cors({origin: '*'}))
 
-app.post('/api/check-subs',  async(req, res) => {
+app.use(express.json())
+
+
+
+app.post('/api/check-subs',  async (req, res) => {
 
   const subs = req.body.subs
   const filter = req.body.filter
+
   const data = await scraper.checkSubs(subs, filter)
-  
   res.send(data)
+
+  
 
 })
 
