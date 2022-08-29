@@ -1,12 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 
 import {
     AppShell,
     Navbar,
     Header,
-    Footer,
-    Aside,
+    Loader,
     Text,
     MediaQuery,
     Burger,
@@ -21,16 +20,15 @@ import Record from './Record';
 export default function Shell() {
     const theme = useMantineTheme();
     const [opened, setOpened] = useState(false);
-    const [loading, setLoading] = useState(false)
-    const [data, setData] = useState([])
+    const [loading, setLoading] = useState(false);
+    const [tracking, setTracking] = useState(false);
+    const [data, setData] = useState([]);
     const [subs, setSubs] = useState([
         { value: 'forrhire', label: 'React' },
         { value: 'ng', label: 'Angular' },
-      ]);
+    ]);
 
-    const handleClick = async () => {
-        setLoading(true);
-
+    const CheckSubs = async () => {
         try {
             const response = await fetch("http://localhost:3000/api/check-subs", {
                 method: "POST",
@@ -68,6 +66,22 @@ export default function Shell() {
             setLoading(false)
         }
     }
+
+    useEffect(() => {
+        setInterval(() => {
+            CheckSubs()
+        }, 60000);
+
+    }, [tracking])
+
+    
+
+    const handleClick = async () => {
+        setLoading(true);
+
+
+
+    }
     return (
         <AppShell
             styles={{
@@ -80,7 +94,7 @@ export default function Shell() {
             navbar={
                 <Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
                     <Text>Application navbar</Text>
-                    {loading && "<h1>Loading</h1>"}
+
                 </Navbar>
             }
 
@@ -102,10 +116,11 @@ export default function Shell() {
                 </Header>
             }
         >
-            <Button  color="yellow" compact onClick={handleClick} size='md'>Get em</Button>
+            <Button color="yellow" compact onClick={() => setTracking(true)} size='md'>Get em</Button>
             <Space h="md" />
             {data[0] && data.map((item) => {
                 return (<Container>
+                    {loading && <Loader size="xs" />}
                     <Record
                         title={item['title']}
                         selftext={item['selftext']}
@@ -114,7 +129,7 @@ export default function Shell() {
                         createdAt={item['createdAt']}
                         upvote_ratio={item['upvote_ratio']}
                         subreddit={item['subreddit']}></Record>
-                        <Space h="md" />
+                    <Space h="md" />
                 </Container>
                 )
             })}
