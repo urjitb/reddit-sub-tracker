@@ -36,13 +36,10 @@ export default function Shell() {
                     subs: ['test', 'forhire'],
                     filter: "hiring"
                 }),
-
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-
-
 
             })
 

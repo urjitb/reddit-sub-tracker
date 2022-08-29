@@ -1,8 +1,10 @@
-# Track latest posts from selected subs
+![rst-logo](img/rst-logo.png)
 
-# Current Progress
+![GitHub last commit](https://img.shields.io/github/last-commit/urjitb/reddit-sub-tracker)
 
- - scraper-cli.js can be run individually to monitor subs once every 60 seconds. Why 60 seconds? Reddit has a 60 requests per minute cap on public api automation. You shouldn't track more than 60 subs using a single token.
- - Base backend complete
- - First clean up complete
- - Set up react frontend wireframe in the sub-tracker-frontend folder
+------
+
+## Key Features
+- **Live Alerts** - Whenever there is a new post on your filters in selected subs get sound notifications
+- **Filters** - Select your own filters to check against post titles (Accepts regex input!).
+- **Multiple Subs** - Track upto 60 subs of your choosing.
