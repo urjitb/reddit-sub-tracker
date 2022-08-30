@@ -21,24 +21,28 @@ export default function Record(props: subTracker) {
             <Text >{props.title}
             </Text>
             <Space h="md" />
-            <Button onClick={()=> window.open(props.url, "_blank")} size="xs" component="a" href="#" variant="outline" leftIcon={<IconExternalLink size={14} />}>
+            <Button onClick={() => window.open(props.url, "_blank")} size="xs" component="a" href="#" variant="outline" leftIcon={<IconExternalLink size={14} />}>
                 Open in new tab
             </Button>
             <Space h="md" />
+            {
+                props.selftext !== "" &&
+                <div>
+                    <Button size="xs" variant="outline" onClick={() => setOpened((o) => !o)}>
+                        More Details
+                    </Button>
 
-            <Button size="xs" variant="outline" onClick={() => setOpened((o) => !o)}>
-                More Details
-            </Button>
+                    <Collapse in={opened}>
+                        <Text size="xs" >
+                            {props.selftext}
+                        </Text>
+                    </Collapse>
+                </div>
+            }
 
-            <Collapse in={opened}>
-                <Text size="xs" >
-                    {props.selftext}
-                </Text>
-            </Collapse>
-            
             <Text>
-            <Space h="md" /><IconArrowUp strokeLinejoin="miter"/>
-             {props.ups}
+                <Space h="md" /><IconArrowUp strokeLinejoin="miter" />
+                {props.ups}
             </Text>
         </Paper>
     );

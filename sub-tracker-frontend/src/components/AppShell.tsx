@@ -138,22 +138,23 @@ export default function Shell() {
 
                 <Button color="yellow" compact onClick={CheckSubs} size='md'>Get em</Button>
                 <Space h="md" />
-
-                {data[0] && data.map((item) => {
-                    return (<Container>
-                        {loading && <Loader size="xs" />}
-                        <Record
-                            title={item['title']}
-                            selftext={item['selftext']}
-                            url={item['url']}
-                            ups={item['ups']}
-                            createdAt={item['createdAt']}
-                            upvote_ratio={item['upvote_ratio']}
-                            subreddit={item['subreddit']}></Record>
-                        <Space h="md" />
-                    </Container>
-                    )
-                })}
+                <div className='all-records'>
+                    {data[0] && data.map((item) => {
+                        return (<div className='record-container'>
+                            {loading && <Loader size="xs" />}
+                            <Record
+                                title={item['title']}
+                                selftext={item['selftext']}
+                                url={item['url']}
+                                ups={item['ups']}
+                                createdAt={item['createdAt']}
+                                upvote_ratio={item['upvote_ratio']}
+                                subreddit={item['subreddit']}></Record>
+                            <Space h="md" />
+                        </div>
+                        )
+                    })}
+                </div>
             </div>
         </AppShell>
     );
