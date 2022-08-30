@@ -44,10 +44,11 @@ function checkSubs(subreddits) {
                 }
             }).then(function (response) {
                 console.log(response.data.data.children.length)
+
                 response.data.data.children.forEach(function (post) {
                     let date = new Date(post.data.created * 1000)
 
-                    if (post.data.title.toLowerCase().includes(filter)) {
+                    if (post.data.title.toLowerCase().includes(filter) || filter[0] === '/' && filter.test(post.data.title.toLowerCase())) {
 
                         if (postsCollector.some(e => e.title == post.data.title)) {
                             console.log('Exists');

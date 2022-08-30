@@ -1,15 +1,22 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
-import { AppShell, Navbar, Header, Aside, Footer, Container, Button } from '@mantine/core';
 import Shell from './components/AppShell';
 
+import { MantineProvider, ColorSchemeProvider, ColorScheme } from '@mantine/core';
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [colorScheme, setColorScheme] = useState<ColorScheme>('dark');
+  const toggleColorScheme = (value?: ColorScheme) =>
+    setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
+
 
   return (
-  
-   <Shell/>
+    <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
+      <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
+        <Shell />
+      </MantineProvider>
+    </ColorSchemeProvider>
   )
 }
 

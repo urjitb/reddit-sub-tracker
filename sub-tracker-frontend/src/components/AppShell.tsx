@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import Record from './Record';
+import { IconSun, IconMoonStars } from '@tabler/icons';
 
 
 import {
@@ -12,13 +14,21 @@ import {
     useMantineTheme,
     Button,
     Container,
-    Divider,
-    Space
+    useMantineColorScheme,
+    Space,
+    ActionIcon,
+    Image
 } from '@mantine/core';
-import Record from './Record';
 
 export default function Shell() {
     const theme = useMantineTheme();
+    const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+
+    const subsRef = useRef(null);
+    const filterRef = useRef(null);
+
+    const dark = colorScheme === 'dark';
+
     const [opened, setOpened] = useState(false);
     const [loading, setLoading] = useState(false);
     const [tracking, setTracking] = useState(false);
@@ -33,26 +43,20 @@ export default function Shell() {
             const response = await fetch("http://localhost:3000/api/check-subs", {
                 method: "POST",
                 body: JSON.stringify({
-                    subs: ['test', 'forhire'],
-                    filter: "hiring"
+                    subs: subsRef.current.value.split(','),
+                    filter: ""
                 }),
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-
             })
-
 
             if (!response.ok) {
                 console.log(`Error! status: ${response.status}`)
             }
-
             const result = await response.json();
             setData(result)
-
-
-
         }
         catch (err) {
             if (err instanceof Error) {
@@ -62,23 +66,11 @@ export default function Shell() {
         finally {
             setLoading(false)
         }
+        setTimeout(CheckSubs, 60000);
     }
 
-    useEffect(() => {
-        setInterval(() => {
-            CheckSubs()
-        }, 60000);
-
-    }, [tracking])
-
-    
-
-    const handleClick = async () => {
-        setLoading(true);
 
 
-
-    }
     return (
         <AppShell
             styles={{
@@ -108,28 +100,61 @@ export default function Shell() {
                             />
                         </MediaQuery>
 
-                        <Text>Application header</Text>
+                        <ActionIcon
+                            variant="outline"
+                            color={dark ? 'yellow' : 'blue'}
+                            onClick={() => toggleColorScheme()}
+                            title="Toggle color scheme"
+                        >
+                            {dark ? <IconSun size={18} /> : <IconMoonStars size={18} />}
+                        </ActionIcon>
                     </div>
                 </Header>
             }
         >
-            <Button color="yellow" compact onClick={() => setTracking(true)} size='md'>Get em</Button>
-            <Space h="md" />
-            {data[0] && data.map((item) => {
-                return (<Container>
-                    {loading && <Loader size="xs" />}
-                    <Record
-                        title={item['title']}
-                        selftext={item['selftext']}
-                        url={item['url']}
-                        ups={item['ups']}
-                        createdAt={item['createdAt']}
-                        upvote_ratio={item['upvote_ratio']}
-                        subreddit={item['subreddit']}></Record>
-                    <Space h="md" />
-                </Container>
-                )
-            })}
+            <div className='what'>
+                <Image src="/rst-logo.png" width={700}></Image>
+
+                <Space h="md" />
+                <div>
+                    <input
+                        ref={subsRef}
+                        type="text"
+                        id="message"
+                        name="message"
+                        placeholder='subs (seperate by comma)'
+                    />
+                    <Space w="md" />
+                    <input
+                        ref={filterRef}
+                        type="text"
+                        id="message"
+                        name="message"
+                        placeholder='filter'
+                    />
+
+                </div>
+                <Space h="md" />
+
+                <Button color="yellow" compact onClick={CheckSubs} size='md'>Get em</Button>
+                <Space h="md" />
+
+                {data[0] && data.map((item) => {
+                    return (<Container>
+                        {loading && <Loader size="xs" />}
+                        <Record
+                            title={item['title']}
+                            selftext={item['selftext']}
+                            url={item['url']}
+                            ups={item['ups']}
+                            createdAt={item['createdAt']}
+                            upvote_ratio={item['upvote_ratio']}
+                            subreddit={item['subreddit']}></Record>
+                        <Space h="md" />
+                    </Container>
+                    )
+                })}
+            </div>
         </AppShell>
     );
 }
