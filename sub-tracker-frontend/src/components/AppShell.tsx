@@ -57,6 +57,8 @@ export default function Shell() {
             }
             const result = await response.json();
             setData(result)
+            
+
         }
         catch (err) {
             if (err instanceof Error) {
@@ -112,7 +114,7 @@ export default function Shell() {
                 </Header>
             }
         >
-            <div className='what'>
+            <div className='container-header'>
                 <Image src="/rst-logo.png" width={700}></Image>
 
                 <Space h="md" />
