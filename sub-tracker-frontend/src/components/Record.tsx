@@ -1,6 +1,6 @@
 import { Text, Paper, Collapse, Button, Space } from '@mantine/core';
 import { useState } from 'react';
-import { IconArrowBarUp, IconArrowUp, IconExternalLink } from '@tabler/icons';
+import { IconArrowBarUp, IconArrowUp, IconClock, IconExternalLink } from '@tabler/icons';
 
 interface subTracker {
     title: string;
@@ -43,6 +43,10 @@ export default function Record(props: subTracker) {
             <Text>
                 <Space h="md" /><IconArrowUp strokeLinejoin="miter" />
                 {props.ups}
+            </Text>
+            <Text size={'sm'}>
+                <Space h="md" /> <p>Created at -</p>
+                {props.createdAt}
             </Text>
         </Paper>
     );

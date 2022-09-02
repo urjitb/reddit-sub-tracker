@@ -12,12 +12,16 @@ app.use(express.json())
 
 
 app.post('/api/check-subs',  async (req, res) => {
-
+try{
   const subs = req.body.subs
   const filter = req.body.filter
 
   const data = await scraper.checkSubs(subs, filter)
   res.send(data)
+}catch(err){
+  console.log(err)
+
+}
 
   
 

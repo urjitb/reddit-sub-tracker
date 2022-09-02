@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Record from './Record';
 import { IconSun, IconMoonStars } from '@tabler/icons';
-
-
 import {
     AppShell,
     Navbar,
@@ -13,7 +11,7 @@ import {
     Burger,
     useMantineTheme,
     Button,
-    Container,
+    Switch,
     useMantineColorScheme,
     Space,
     ActionIcon,
@@ -57,7 +55,7 @@ export default function Shell() {
             }
             const result = await response.json();
             setData(result)
-            
+
 
         }
         catch (err) {
@@ -68,7 +66,9 @@ export default function Shell() {
         finally {
             setLoading(false)
         }
-        setTimeout(CheckSubs, 60000);
+        if (tracking == true) {
+            setTimeout(CheckSubs, 60000);
+        }
     }
 
 
@@ -84,8 +84,31 @@ export default function Shell() {
             asideOffsetBreakpoint="sm"
             navbar={
                 <Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
-                    <Text>Application navbar</Text>
 
+                    <Space h="md" />
+                    <div>
+                        <input
+                            ref={subsRef}
+                            type="text"
+                            id="message"
+                            name="message"
+                            placeholder='subs (seperate by comma)'
+                        />
+                        <Space w="md" />
+                        <input
+                            ref={filterRef}
+                            type="text"
+                            id="message"
+                            name="message"
+                            placeholder='filter'
+                        />
+
+                    </div>
+                    <Space h="md" /><div>
+                        <Switch checked={tracking} onChange={(event) => setTracking(event.currentTarget.checked)} /> <p></p>
+                    </div>
+                    <Space h="md" />
+                    <Button color="yellow" compact onClick={CheckSubs} size='md'>Get em</Button>
                 </Navbar>
             }
 
@@ -117,28 +140,7 @@ export default function Shell() {
             <div className='container-header'>
                 <Image src="/rst-logo.png" width={700}></Image>
 
-                <Space h="md" />
-                <div>
-                    <input
-                        ref={subsRef}
-                        type="text"
-                        id="message"
-                        name="message"
-                        placeholder='subs (seperate by comma)'
-                    />
-                    <Space w="md" />
-                    <input
-                        ref={filterRef}
-                        type="text"
-                        id="message"
-                        name="message"
-                        placeholder='filter'
-                    />
 
-                </div>
-                <Space h="md" />
-
-                <Button color="yellow" compact onClick={CheckSubs} size='md'>Get em</Button>
                 <Space h="md" />
                 <div className='all-records'>
                     {data[0] && data.map((item) => {
